@@ -1,10 +1,11 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const Header = () => {
+const Header = ({ appName, children }) => {
   return (
     <View>
-      <Text>Header</Text>
+      <Text>Welcome to {appName}</Text>
+      {children}
     </View>
   )
 }

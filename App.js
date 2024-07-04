@@ -6,8 +6,9 @@ export default function App() {
   const appName = 'Summer 2024 class';
   return (
     <View style={styles.container}>
-      <Header />
-      <Text>Welcome to {appName}</Text>
+      <Header appName={appName} theme = 'dark'>
+        <Text>Some other children</Text>
+      </Header>
       <StatusBar style="auto" />
     </View>
   );
