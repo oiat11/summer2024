@@ -9,7 +9,10 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Header appName={appName} theme = 'dark'>
-        <Text>Some other children</Text>
+        <Text>Lab2 Question 1: </Text>
+        <Text>onChange is used in React for web applications with standard HTML input elements. It triggers an event when the value of an input element changes. And we need to access the event.target.value to get the new value
+              onChangeText is used in React Native for mobile applications with React Native TextInput components. It directly provides the new value as a parameter to the handler.
+        </Text>
       </Header>
       <Input />
       <StatusBar style="auto" />
