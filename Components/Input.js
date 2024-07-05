@@ -10,6 +10,7 @@ const Input = () => {
        <TextInput
         style={{ height: 40}}
         placeholder="Type here to translate!"
+        secureTextEntry={true}
         onChangeText={changedText => setText(changedText)}
         value={text}
         />
