@@ -1,7 +1,7 @@
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Modal } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 
-const Input = ({ inputHandler }) => {
+const Input = ({ inputHandler, isModalVisible }) => {
   const [text, setText] = useState('');
   const [showThankYou, setShowThankYou] = useState(false);
   const textInputRef = useRef(null);
@@ -26,20 +26,31 @@ const Input = ({ inputHandler }) => {
   };
 
   return (
-    <View>
-      <TextInput
-        style={{ height: 40 }}
-        placeholder="Type here to translate!"
-        onChangeText={changedText => setText(changedText)}
-        value={text}
-        onBlur={handleBlur}
-        onFocus={handleFocus}
-        ref={textInputRef}
-      />
-      {showThankYou && <Text>Thank you</Text>}
-      <Button title="Confirm" onPress={handleConfirm} />
-    </View>
+    <Modal animationType="slide" visible={isModalVisible}>
+      <View style={styles.container}>
+        <TextInput
+          style={{ height: 40 }}
+          placeholder="Type here"
+          onChangeText={changedText => setText(changedText)}
+          value={text}
+          onBlur={handleBlur}
+          onFocus={handleFocus}
+          ref={textInputRef}
+        />
+        {showThankYou && <Text>Thank you</Text>}
+        <Button title="Confirm" onPress={handleConfirm} />
+      </View>
+    </Modal>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default Input;
