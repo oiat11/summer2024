@@ -1,4 +1,4 @@
-import { View, Text, TextInput } from 'react-native'
+import { View, Text, TextInput, Button } from 'react-native'
 import React, { useState, useEffect, useRef } from 'react';
 
 
@@ -21,12 +21,15 @@ const Input = ({ autoFocus }) => {
     setShowThankYou(false);
   };
 
+  const handleConfirm = () => {
+    console.log(`You typed: ${text}`);
+  }
+
   return (
     <View>
        <TextInput
         style={{ height: 40}}
         placeholder="Type here to translate!"
-        secureTextEntry={true}
         onChangeText={changedText => setText(changedText)}
         value={text}
         onBlur={handleBlur}
@@ -34,6 +37,7 @@ const Input = ({ autoFocus }) => {
         />
       <Text>User typed: {text}</Text>
       {showThankYou && <Text>Thank you</Text>}
+      <Button title='Confirm' onPress={handleConfirm} />
     </View>
   )
 }
