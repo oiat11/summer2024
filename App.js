@@ -1,24 +1,34 @@
- import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from 'expo-status-bar';
 import Header from './Components/Header';
 import Input from './Components/Input';
-import {  View, Text ,StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button, SafeAreaView } from 'react-native';
+import { useState } from 'react';
 
 export default function App() {
   const appName = 'Summer 2024 class';
+  const [text, setText] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+
+  function handleInputData(data) {
+    console.log('callback fn called with:', data);
+    setText(data);
+    setModalVisible(false); 
+  }
 
   return (
-    <View style={styles.container}>
-      <Header appName={appName} theme = 'dark'>
-        <Text>Lab2 Question 1: </Text>
-        <Text>onChange is used in React for web applications with standard HTML input elements. It triggers an event when the value of an input element changes. And we need to access the event.target.value to get the new value
-              onChangeText is used in React Native for mobile applications with React Native TextInput components. It directly provides the new value as a parameter to the handler.
-        <Text>Lab2 Question 2: </Text>    
-        <Text>add "secureTextEntry={true}" to TextInput</Text>
-        </Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.topContainer}>
+      <Header appName={appName} theme="dark">
+        <Text>children</Text>
       </Header>
-      <Input />
+      <Input inputHandler={handleInputData} isModalVisible={modalVisible} />
+      <Button title="Add a goal" onPress={() => setModalVisible(true)} />
+      </View>
+      <View style={styles.bottomContainer}>
+      <Text style={styles.textStyle}>{text}</Text>
+      </View>
       <StatusBar style="auto" />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -26,7 +36,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'center',
+  },
+  textStyle: {
+    fontSize: 20,
+    color: 'red',
+  },
+  topContainer: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  bottomContainer: {
+    flex: 4,
+    backgroundColor: '#dcd',
+    alignItems: 'center',
   },
 });
