@@ -1,7 +1,7 @@
 import { View, Text, TextInput, Button, StyleSheet, Modal } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 
-const Input = ({ inputHandler, isModalVisible }) => {
+const Input = ({ inputHandler, isModalVisible, onCancel }) => {
   const [text, setText] = useState('');
   const [showThankYou, setShowThankYou] = useState(false);
   const textInputRef = useRef(null);
@@ -40,6 +40,9 @@ const Input = ({ inputHandler, isModalVisible }) => {
         {showThankYou && <Text>Thank you</Text>}
         <View style={styles.buttonStyle}>
         <Button title="Confirm" onPress={handleConfirm} />
+        </View>
+        <View style={styles.buttonStyle}>
+        <Button title="Cancel" onPress={onCancel} />
         </View>
       </View>
     </Modal>
