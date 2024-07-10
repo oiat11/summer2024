@@ -1,5 +1,8 @@
-import { View, Text, TextInput, Button, StyleSheet, Modal } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Modal, Image } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
+
+// Import the local image
+import LocalImage from '../assets/2617812.png';
 
 const Input = ({ inputHandler, isModalVisible, onCancel }) => {
   const [text, setText] = useState('');
@@ -44,13 +47,25 @@ const Input = ({ inputHandler, isModalVisible, onCancel }) => {
           ref={textInputRef}
         />
         {showThankYou && <Text>Thank you</Text>}
+        <View style={styles.imageContainer}>
+          <Image 
+            style={styles.imageStyle}
+            source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2617/2617812.png' }}
+            alt="Network Image"
+          />
+          <Image 
+            style={styles.imageStyle}
+            source={LocalImage}
+            alt="Local Image"
+          />
+        </View>
         <View style={styles.buttonContainer}>
-        <View style={styles.buttonStyle}>
-        <Button title="Confirm" onPress={handleConfirm} />
-        </View>
-        <View style={styles.buttonStyle}>
-        <Button title="Cancel" onPress={handleCancel} />
-        </View>
+          <View style={styles.buttonStyle}>
+            <Button title="Confirm" onPress={handleConfirm} disabled={text === ''} />
+          </View>
+          <View style={styles.buttonStyle}>
+            <Button title="Cancel" onPress={handleCancel} />
+          </View>
         </View>
       </View>
     </Modal>
@@ -70,6 +85,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonStyle: {
+    marginHorizontal: 10,
+  },
+  imageContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 20,
+  },
+  imageStyle: {
+    width: 100,
+    height: 100,
     marginHorizontal: 10,
   },
 });
