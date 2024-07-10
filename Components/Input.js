@@ -38,11 +38,13 @@ const Input = ({ inputHandler, isModalVisible, onCancel }) => {
           ref={textInputRef}
         />
         {showThankYou && <Text>Thank you</Text>}
+        <View style={styles.buttonContainer}>
         <View style={styles.buttonStyle}>
         <Button title="Confirm" onPress={handleConfirm} />
         </View>
         <View style={styles.buttonStyle}>
         <Button title="Cancel" onPress={onCancel} />
+        </View>
         </View>
       </View>
     </Modal>
@@ -56,9 +58,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
   buttonStyle: {
-    width: "30%",
-    margin: 5,
+    marginHorizontal: 10,
   },
 });
 
