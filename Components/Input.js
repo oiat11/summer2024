@@ -23,6 +23,12 @@ const Input = ({ inputHandler, isModalVisible, onCancel }) => {
   const handleConfirm = () => {
     console.log(`You typed: ${text}`);
     inputHandler(text);
+    setText('');  
+  };
+
+  const handleCancel = () => {
+    setText(''); 
+    onCancel();
   };
 
   return (
@@ -43,7 +49,7 @@ const Input = ({ inputHandler, isModalVisible, onCancel }) => {
         <Button title="Confirm" onPress={handleConfirm} />
         </View>
         <View style={styles.buttonStyle}>
-        <Button title="Cancel" onPress={onCancel} />
+        <Button title="Cancel" onPress={handleCancel} />
         </View>
         </View>
       </View>
