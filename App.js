@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import Header from './Components/Header';
 import Input from './Components/Input';
-import { View, Text, StyleSheet, Button, SafeAreaView, ScrollView, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Button, SafeAreaView, FlatList } from 'react-native';
 import { useState } from 'react';
+import GoalItem from './Components/GoalItem';
 
 export default function App() {
   const appName = 'Summer 2024 class';
@@ -19,6 +20,13 @@ export default function App() {
     setModalVisible(false);
   }
 
+  function handleDelete(deleteId) {
+    console.log(`Delete goal with id: ${deleteId}`);
+    setGoals(currentGoals => {
+      return currentGoals.filter((goal) => {return goal.id !== deleteId});
+      });
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topContainer}>
@@ -30,16 +38,10 @@ export default function App() {
         {goals.length === 0 && <Text style={styles.noGoalsText}>Please add a goal</Text>}
         <FlatList
           data={goals}
-          renderItem={({ item }) => {
-            return (
-              <View style={styles.textContainer}>
-                <Text style={styles.textStyle}>{item.text}</Text>
-              </View>
-            );
-          }}
+          renderItem={({ item }) => <GoalItem goal={item} deleteHandler={handleDelete} />}
           keyExtractor={item => item.id}
         />
-        {/*<ScrollView>
+          {/*<ScrollView>
           {goals.map((goalObj) => {
             console.log(goalObj);
             return (
@@ -61,18 +63,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  textStyle: {
-    fontSize: 20,
-    color: 'darkmagenta',
-  },
-  textContainer: {
-    width: '10%',
-    backgroundColor: "#aaa",
-    padding: 10,
-    marginVertical: 10,
-    borderRadius: 5,
-    alignSelf: 'center',
-  },
   topContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -85,7 +75,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#dcd',
     width: '100%', 
   },
-
   noGoalsText: {
     fontSize: 18,
     color: 'darkmagenta',
