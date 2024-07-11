@@ -1,17 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import Header from './Components/Header';
 import Input from './Components/Input';
-import { View, Text, StyleSheet, Button, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, Button, SafeAreaView, ScrollView } from 'react-native';
 import { useState } from 'react';
 
 export default function App() {
   const appName = 'Summer 2024 class';
-  const [text, setText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [goals, setGoals] = useState([]);
 
   function handleInputData(data) {
-    console.log('callback fn called with:', data);
-    setText(data);
+    const newGoal = { text: data, id: Math.random().toString() };
+    setGoals(currentGoals => [...currentGoals, newGoal]);
     setModalVisible(false); 
   }
 
@@ -22,13 +22,22 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topContainer}>
-      <Header appName={appName} theme="dark">
-      </Header>
-      <Input inputHandler={handleInputData} isModalVisible={modalVisible} onCancel={handleCancel}/>
-      <Button title="Add a goal" onPress={() => setModalVisible(true)} />
+        <Header appName={appName} theme="dark" />
+        <Input inputHandler={handleInputData} isModalVisible={modalVisible} onCancel={handleCancel} />
+        <Button title="Add a goal" onPress={() => setModalVisible(true)} />
       </View>
       <View style={styles.bottomContainer}>
-      <Text style={styles.textStyle}>{text}</Text>
+        {goals.length === 0 && <Text style={styles.noGoalsText}>Please add a goal</Text>}
+        <ScrollView>
+          {goals.map((goalObj) => {
+            console.log(goalObj);
+            return (
+              <View key={goalObj.id} style={styles.textContainer}>
+                <Text style={styles.textStyle}>{goalObj.text}</Text>
+              </View>
+            );
+          })}
+        </ScrollView>
       </View>
       <StatusBar style="auto" />
     </SafeAreaView>
@@ -39,11 +48,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'center',
   },
   textStyle: {
     fontSize: 20,
-    color: 'red',
+    color: 'darkmagenta',
+  },
+  textContainer: {
+    width: '10%',
+    backgroundColor: "#aaa",
+    padding: 10,
+    marginVertical: 10,
+    borderRadius: 5,
+    alignSelf: 'center',
   },
   topContainer: {
     justifyContent: 'center',
@@ -51,8 +67,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomContainer: {
+    alignContent: 'center',
+    justifyContent: 'center',
     flex: 4,
     backgroundColor: '#dcd',
-    alignItems: 'center',
+    width: '100%', 
+  },
+
+  noGoalsText: {
+    fontSize: 18,
+    color: 'darkmagenta',
+    textAlign: 'center',
+    marginVertical: 20,
   },
 });
