@@ -38,8 +38,7 @@ const Input = ({ inputHandler, isModalVisible, onCancel }) => {
     <Modal animationType="slide" visible={isModalVisible} transparent={true}>
       <View style={styles.modalBackground}>
         <View style={styles.container}>
-          <TextInput
-            style={{ height: 40 }}
+          <TextInput style={styles.input}
             placeholder="Type here"
             onChangeText={changedText => setText(changedText)}
             value={text}
@@ -105,6 +104,14 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginHorizontal: 10,
+  },
+  input: {
+    height: 40,
+    color: 'darkmagenta',
+    borderColor: 'darkmagenta',
+    borderWidth: 2,
+    padding: 5,
+    borderRadius: 5,
   },
 });
 
