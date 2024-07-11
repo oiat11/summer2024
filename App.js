@@ -23,7 +23,6 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <View style={styles.topContainer}>
       <Header appName={appName} theme="dark">
-        <Text>children</Text>
       </Header>
       <Input inputHandler={handleInputData} isModalVisible={modalVisible} onCancel={handleCancel}/>
       <Button title="Add a goal" onPress={() => setModalVisible(true)} />
@@ -47,6 +46,7 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   topContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
   },
