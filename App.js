@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import Header from './Components/Header';
 import Input from './Components/Input';
-import { View, Text, StyleSheet, Button, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Button, SafeAreaView, ScrollView, FlatList } from 'react-native';
 import { useState } from 'react';
 
 export default function App() {
@@ -28,7 +28,18 @@ export default function App() {
       </View>
       <View style={styles.bottomContainer}>
         {goals.length === 0 && <Text style={styles.noGoalsText}>Please add a goal</Text>}
-        <ScrollView>
+        <FlatList
+          data={goals}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.textContainer}>
+                <Text style={styles.textStyle}>{item.text}</Text>
+              </View>
+            );
+          }}
+          keyExtractor={item => item.id}
+        />
+        {/*<ScrollView>
           {goals.map((goalObj) => {
             console.log(goalObj);
             return (
@@ -38,6 +49,7 @@ export default function App() {
             );
           })}
         </ScrollView>
+        */}
       </View>
       <StatusBar style="auto" />
     </SafeAreaView>
