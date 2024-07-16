@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import Header from './Header'
+import Header from './Header';
 import Input from './Input';
 import { View, Text, StyleSheet, Button, SafeAreaView, FlatList } from 'react-native';
 import { useState } from 'react';
 import GoalItem from './GoalItem';
 
-export default function Home() {
+export default function Home({ navigation }) {
   const appName = 'Summer 2024 class';
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
@@ -13,7 +13,7 @@ export default function Home() {
   function handleInputData(data) {
     const newGoal = { text: data, id: Math.random().toString() };
     setGoals(currentGoals => [...currentGoals, newGoal]);
-    setModalVisible(false); 
+    setModalVisible(false);
   }
 
   function handleCancel() {
@@ -21,10 +21,11 @@ export default function Home() {
   }
 
   function handleDelete(deleteId) {
-    console.log(`Delete goal with id: ${deleteId}`);
-    setGoals(currentGoals => {
-      return currentGoals.filter((goal) => {return goal.id !== deleteId});
-      });
+    setGoals(currentGoals => currentGoals.filter(goal => goal.id !== deleteId));
+  }
+
+  function handlePressGoal(goalId) {
+    navigation.navigate('Details');
   }
 
   return (
@@ -38,20 +39,11 @@ export default function Home() {
         {goals.length === 0 && <Text style={styles.noGoalsText}>Please add a goal</Text>}
         <FlatList
           data={goals}
-          renderItem={({ item }) => <GoalItem goal={item} deleteHandler={handleDelete} />}
+          renderItem={({ item }) => (
+            <GoalItem goal={item} deleteHandler={handleDelete} pressHandler={handlePressGoal} />
+          )}
           keyExtractor={item => item.id}
         />
-          {/*<ScrollView>
-          {goals.map((goalObj) => {
-            console.log(goalObj);
-            return (
-              <View key={goalObj.id} style={styles.textContainer}>
-                <Text style={styles.textStyle}>{goalObj.text}</Text>
-              </View>
-            );
-          })}
-        </ScrollView>
-        */}
       </View>
       <StatusBar style="auto" />
     </SafeAreaView>
@@ -73,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 4,
     backgroundColor: '#dcd',
-    width: '100%', 
+    width: '100%',
   },
   noGoalsText: {
     fontSize: 18,

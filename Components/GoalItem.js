@@ -1,11 +1,12 @@
 import { View, Text, StyleSheet, Button } from 'react-native';
 import React from 'react';
 
-const GoalItem = ({ goal, deleteHandler }) => {
+const GoalItem = ({ goal, deleteHandler, pressHandler }) => {
   return (
     <View style={styles.textContainer}>
       <Text style={styles.textStyle}>{goal.text}</Text>
       <Button color="black" title="X" onPress={() => deleteHandler(goal.id)} />
+      <Button color="black" title="i" onPress={() => pressHandler(goal.id)} />
     </View>
   );
 };
