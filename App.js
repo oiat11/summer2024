@@ -7,11 +7,16 @@ import GoalDetails from './Components/GoalDetails';
 
 const Stack = createNativeStackNavigator();
 
+const commonScreenOptions = {
+  headerStyle: { backgroundColor: 'darkmagenta' },
+  headerTintColor: '#fff',
+};
+
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={Home} options={{title:"All Goals", headerStyle: { backgroundColor: 'darkmagenta' }, headerTintColor:"#fff" }}/>
+      <Stack.Navigator initialRouteName="Home" screenOptions={commonScreenOptions}>
+        <Stack.Screen name="Home" component={Home} options={{title:"All Goals"}}/>
         <Stack.Screen
           name="Details"
           component={GoalDetails}

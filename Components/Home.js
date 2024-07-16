@@ -41,7 +41,7 @@ export default function Home({ navigation }) {
         <FlatList
           data={goals}
           renderItem={({ item }) => (
-            <GoalItem goal={item} deleteHandler={handleDelete} pressHandler={handlePressGoal(item)} />
+            <GoalItem goal={item} deleteHandler={handleDelete} pressHandler={() => handlePressGoal(item)} />
           )}
           keyExtractor={item => item.id}
         />
