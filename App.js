@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './Components/Home';
@@ -16,6 +17,8 @@ export default function App() {
           component={GoalDetails}
           options={({ route }) => ({
             title: route.params.goalObj.text,
+            headerStyle: { backgroundColor: 'darkmagenta' }, headerTintColor:"#fff",
+            headerRight: () => <Button title="Warning" onPress={() => console.log('Warning!')} />,
           })}
         />
       </Stack.Navigator>
