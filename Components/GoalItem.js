@@ -12,21 +12,21 @@ const GoalItem = ({ goal, deleteHandler, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    textStyle: {
-      fontSize: 20,
-      color: 'darkmagenta',
-    },
-    textContainer: {
-      width: '30%', 
-      backgroundColor: "#aaa",
-      padding: 10,
-      marginVertical: 10,
-      flexDirection: 'row',
-      borderRadius: 5,
-      alignSelf: 'center',
-      justifyContent: 'center', 
-      alignItems: 'center', 
-    },
-  });
+  textStyle: {
+    fontSize: 20,
+    color: 'darkmagenta',
+  },
+  textContainer: {
+    width: '30%',
+    backgroundColor: "#aaa",
+    padding: 10,
+    marginVertical: 10,
+    flexDirection: 'row',
+    borderRadius: 5,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default GoalItem;
