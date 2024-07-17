@@ -14,15 +14,20 @@ const commonScreenOptions = {
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={Home} options={{title:"All Goals", headerStyle: { backgroundColor: 'darkmagenta' }, headerTintColor:"#fff" }}/>
+      <Stack.Navigator initialRouteName="Home" screenOptions={commonScreenOptions}>
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{ title: "All Goals" }}
+        />
         <Stack.Screen
           name="Details"
           component={GoalDetails}
           options={({ route }) => ({
             title: route.params.goalObj.text,
-            headerStyle: { backgroundColor: 'darkmagenta' }, headerTintColor:"#fff",
-            headerRight: () => <Button title="Warning" onPress={() => console.log('Warning!')} />,
+            headerRight: () => (
+              <Button title="Warning" onPress={() => console.log('Warning!')} />
+            ),
           })}
         />
       </Stack.Navigator>
