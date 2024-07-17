@@ -15,19 +15,12 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home" screenOptions={commonScreenOptions}>
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{ title: "All Goals" }}
-        />
+        <Stack.Screen name="Home" component={Home} options={{title:"All Goals"}}/>
         <Stack.Screen
           name="Details"
           component={GoalDetails}
           options={({ route }) => ({
             title: route.params.goalObj.text,
-            headerRight: () => (
-              <Button title="Warning" onPress={() => console.log('Warning!')} />
-            ),
           })}
         />
       </Stack.Navigator>
