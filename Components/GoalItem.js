@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet, Button } from 'react-native';
 import React from 'react';
 
-const GoalItem = ({ goal, deleteHandler, pressHandler }) => {
+const GoalItem = ({ goal, deleteHandler, navigation }) => {
   return (
     <View style={styles.textContainer}>
       <Text style={styles.textStyle}>{goal.text}</Text>
       <Button color="black" title="X" onPress={() => deleteHandler(goal.id)} />
-      <Button color="black" title="i" onPress={() => pressHandler(goal.id)} />
+      <Button color="black" title="i" onPress={() => navigation.navigate('Details', { goalObj: goal })} />
     </View>
   );
 };
