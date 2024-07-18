@@ -4,6 +4,7 @@ import Input from './Input';
 import { View, Text, StyleSheet, Button, SafeAreaView, FlatList } from 'react-native';
 import { useState } from 'react';
 import GoalItem from './GoalItem';
+import PressableButton from './PressableButton';
 
 export default function Home({ navigation }) {
   const appName = 'Summer 2024 class';
@@ -29,7 +30,8 @@ export default function Home({ navigation }) {
       <View style={styles.topContainer}>
         <Header appName={appName} theme="dark" />
         <Input inputHandler={handleInputData} isModalVisible={modalVisible} onCancel={handleCancel} />
-        <Button title="Add a goal" onPress={() => setModalVisible(true)} />
+        {/*<Button title="Add a goal" onPress={() => setModalVisible(true)} />*/}
+        <PressableButton style={styles.buttonStyle} pressedFunction={() => setModalVisible(true)}><Text style={styles.textStyle}>Add a goal</Text></PressableButton>
       </View>
       <View style={styles.bottomContainer}>
         {goals.length === 0 && <Text style={styles.noGoalsText}>Please add a goal</Text>}
@@ -55,6 +57,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  textStyle: {
+    fontSize: 25,
+    color: 'darkmagenta',
+  },
   topContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -73,4 +79,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 20,
   },
+  buttonStyle: {
+   borderRadius: 5,
+   padding: 5,
+     },
 });
