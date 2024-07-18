@@ -1,19 +1,23 @@
 import { View, Text, StyleSheet, Button, Pressable } from 'react-native';
 import React from 'react';
+import PressableButton from './PressableButton';
 
 const GoalItem = ({ goal, deleteHandler, navigation }) => {
   return (
     <View style={styles.textContainer}>
-   <Pressable
+      <Pressable
         android_ripple={{ color: 'pink' }}
-        style={({ pressed }) => {
-          return [styles.horizontalContainer, pressed&&styles.pressedStyle];
-        }}
+        style={({ pressed }) => [
+          styles.horizontalContainer,
+          pressed && styles.pressedStyle
+        ]}
         onPress={() => navigation.navigate('Details', { goalObj: goal })}
       >
-      <Text style={styles.textStyle}>{goal.text}</Text>
-      <Button color="black" title="X" onPress={() => deleteHandler(goal.id)} />
-  
+        <Text style={styles.textStyle}>{goal.text}</Text>
+        {/* <Button color="black" title="X" onPress={() => deleteHandler(goal.id)} /> */}
+        <PressableButton componentStyle={styles.buttonStyle} pressedFunction={() => deleteHandler(goal.id)}>
+          <Text>X</Text>
+        </PressableButton>
       </Pressable>
     </View>
   );
@@ -43,7 +47,12 @@ const styles = StyleSheet.create({
     pressedStyle:{
       opacity: 0.5,
       backgroundColor: 'red',
-    }
+    },
+    buttonStyle: {
+      marginLeft: 10,
+      backgroundColor: 'grey',
+      padding: 5,
+    },
   });
 
 export default GoalItem;
