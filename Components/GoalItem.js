@@ -4,9 +4,11 @@ import React from 'react';
 const GoalItem = ({ goal, deleteHandler, navigation }) => {
   return (
     <View style={styles.textContainer}>
-     <Pressable 
-        android_ripple={{ color: 'pink' }} 
-        style={styles.pressable} 
+   <Pressable
+        android_ripple={{ color: 'pink' }}
+        style={({ pressed }) => {
+          return [styles.horizontalContainer, pressed&&styles.pressedStyle];
+        }}
         onPress={() => navigation.navigate('Details', { goalObj: goal })}
       >
       <Text style={styles.textStyle}>{goal.text}</Text>
@@ -23,9 +25,7 @@ const styles = StyleSheet.create({
       color: 'darkmagenta',
     },
     textContainer: {
-      width: '30%', 
       backgroundColor: "#aaa",
-      padding: 10,
       marginVertical: 10,
       flexDirection: 'row',
       borderRadius: 5,
@@ -34,10 +34,15 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       backgroundColor: '#f0f0f0',
     },
-    pressable: {
+    horizontalContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      padding: 15,
+    },
+    pressedStyle:{
+      opacity: 0.5,
+      backgroundColor: 'red',
     }
   });
 
