@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Button, Pressable } from 'react-native';
 import React from 'react';
 import PressableButton from './PressableButton';
+import { AntDesign } from '@expo/vector-icons';
 
 const GoalItem = ({ goal, deleteHandler, navigation }) => {
   return (
@@ -16,7 +17,7 @@ const GoalItem = ({ goal, deleteHandler, navigation }) => {
         <Text style={styles.textStyle}>{goal.text}</Text>
         {/* <Button color="black" title="X" onPress={() => deleteHandler(goal.id)} /> */}
         <PressableButton componentStyle={styles.buttonStyle} pressedFunction={() => deleteHandler(goal.id)}>
-          <Text>X</Text>
+        <AntDesign name="delete" size={24} color="black" />
         </PressableButton>
       </Pressable>
     </View>
@@ -29,14 +30,13 @@ const styles = StyleSheet.create({
       color: 'darkmagenta',
     },
     textContainer: {
-      backgroundColor: "#aaa",
       marginVertical: 10,
       flexDirection: 'row',
       borderRadius: 5,
       alignSelf: 'center',
       justifyContent: 'center', 
       alignItems: 'center',
-      backgroundColor: '#f0f0f0',
+      backgroundColor: '#bfbfbf',
     },
     horizontalContainer: {
       flexDirection: 'row',
