@@ -5,8 +5,10 @@ import { View, Text, StyleSheet, Button, SafeAreaView, FlatList } from 'react-na
 import { useState } from 'react';
 import GoalItem from './GoalItem';
 import PressableButton from './PressableButton';
+import { app } from '../Firebase/FirebaseSetup';
 
 export default function Home({ navigation }) {
+  console.log(app);
   const appName = 'Summer 2024 class';
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
