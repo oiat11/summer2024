@@ -31,7 +31,7 @@ export default function Home({ navigation }) {
 
   function handleInputData(data) {
     const newGoal = { text: data };
-    setGoals(currentGoals => [...currentGoals, newGoal]);
+    //setGoals(currentGoals => [...currentGoals, newGoal]);
     writeToDB(newGoal, "goals");
     setModalVisible(false);
   }
