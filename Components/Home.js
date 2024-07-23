@@ -2,20 +2,31 @@ import { StatusBar } from 'expo-status-bar';
 import Header from './Header';
 import Input from './Input';
 import { View, Text, StyleSheet, Button, SafeAreaView, FlatList } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import GoalItem from './GoalItem';
 import PressableButton from './PressableButton';
-import { app } from '../Firebase/FirebaseSetup';
+import { database } from '../Firebase/FirebaseSetup';
+import { onSnapshot } from '../Firebase/firestoreHelper';
+import {writeToDB} from '../Firebase/firestoreHelper';
+import { collection } from 'firebase/firestore';
 
 export default function Home({ navigation }) {
-  console.log(app);
   const appName = 'Summer 2024 class';
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
 
+  useEffect(() => {
+    onSnapshot(collection(database, 'goals'), (querySnapshot) => {
+      if (!querySnapshot.empty)
+        querySnapshot.forEach((docSnapshot) => {console.log(docSnapshot.data())});
+        newArray.push({...docSnapshot.data(), id: docSnapshot.id});
+        });
+  }, setGoals(newArray));
+
   function handleInputData(data) {
-    const newGoal = { text: data, id: Math.random().toString() };
+    const newGoal = { text: data };
     setGoals(currentGoals => [...currentGoals, newGoal]);
+    writeToDB(newGoal, "goals");
     setModalVisible(false);
   }
 
