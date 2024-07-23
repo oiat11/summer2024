@@ -2,18 +2,37 @@ import { StatusBar } from 'expo-status-bar';
 import Header from './Header';
 import Input from './Input';
 import { View, Text, StyleSheet, Button, SafeAreaView, FlatList } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import GoalItem from './GoalItem';
 import PressableButton from './PressableButton';
+import { database } from '../Firebase/FirebaseSetup';
+import { deleteFromDB} from '../Firebase/firestoreHelper';
+import {writeToDB} from '../Firebase/firestoreHelper';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 export default function Home({ navigation }) {
   const appName = 'Summer 2024 class';
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
 
+  useEffect(() => {
+    onSnapshot(collection(database, 'goals'), (querySnapshot) => {
+      let newArray = [];
+      if(!querySnapshot.empty) {
+      querySnapshot.forEach((docSnapshot) => {
+        console.log(docSnapshot);
+        newArray.push({ ...docSnapshot.data().data, id: docSnapshot.id });
+        
+      });}
+      setGoals(newArray);
+    });
+  }, []);
+
+
   function handleInputData(data) {
-    const newGoal = { text: data, id: Math.random().toString() };
-    setGoals(currentGoals => [...currentGoals, newGoal]);
+    const newGoal = { text: data };
+    //setGoals(currentGoals => [...currentGoals, newGoal]);
+    writeToDB(newGoal, "goals");
     setModalVisible(false);
   }
 
@@ -22,7 +41,9 @@ export default function Home({ navigation }) {
   }
 
   function handleDelete(deleteId) {
-    setGoals(currentGoals => currentGoals.filter(goal => goal.id !== deleteId));
+    console.log('deleteId', deleteId);
+    //setGoals(currentGoals => currentGoals.filter(goal => goal.id !== deleteId));
+    deleteFromDB(deleteId, "goals");
   }
 
   return (
@@ -40,7 +61,7 @@ export default function Home({ navigation }) {
           renderItem={({ item }) => (
             <GoalItem
               goal={item}
-              deleteHandler={handleDelete}
+              deleteHandler={() => handleDelete(item.id)}
               navigation={navigation}
             />
           )}
