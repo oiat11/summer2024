@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 import GoalItem from './GoalItem';
 import PressableButton from './PressableButton';
 import { database } from '../Firebase/FirebaseSetup';
-import { onSnapshot } from '../Firebase/firestoreHelper';
+import { deleteFromDB} from '../Firebase/firestoreHelper';
 import {writeToDB} from '../Firebase/firestoreHelper';
-import { collection } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 export default function Home({ navigation }) {
   const appName = 'Summer 2024 class';
@@ -17,11 +17,17 @@ export default function Home({ navigation }) {
 
   useEffect(() => {
     onSnapshot(collection(database, 'goals'), (querySnapshot) => {
-      if (!querySnapshot.empty)
-        querySnapshot.forEach((docSnapshot) => {console.log(docSnapshot.data())});
-        newArray.push({...docSnapshot.data(), id: docSnapshot.id});
-        });
-  }, setGoals(newArray));
+      let newArray = [];
+      if(!querySnapshot.empty) {
+      querySnapshot.forEach((docSnapshot) => {
+        console.log(docSnapshot);
+        newArray.push({ ...docSnapshot.data().data, id: docSnapshot.id });
+        
+      });}
+      setGoals(newArray);
+    });
+  }, []);
+
 
   function handleInputData(data) {
     const newGoal = { text: data };
@@ -35,7 +41,9 @@ export default function Home({ navigation }) {
   }
 
   function handleDelete(deleteId) {
-    setGoals(currentGoals => currentGoals.filter(goal => goal.id !== deleteId));
+    console.log('deleteId', deleteId);
+    //setGoals(currentGoals => currentGoals.filter(goal => goal.id !== deleteId));
+    deleteFromDB(deleteId, "goals");
   }
 
   return (
@@ -53,7 +61,7 @@ export default function Home({ navigation }) {
           renderItem={({ item }) => (
             <GoalItem
               goal={item}
-              deleteHandler={handleDelete}
+              deleteHandler={() => handleDelete(item.id)}
               navigation={navigation}
             />
           )}
