@@ -4,7 +4,7 @@ import { database } from "./FirebaseSetup";
 
 export async function writeToDB(data, collectionName = 'goals') {
     try{
-    const docId = await addDoc(collection(database, collectionName), { data} );
+    const docId = await addDoc(collection(database, collectionName), data);
     console.log('Document written with ID: ', docId.id);
     } catch(err) {
         console.error('write to db ', err);
