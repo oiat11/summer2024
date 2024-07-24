@@ -1,5 +1,6 @@
 import { View, Text, Button, StyleSheet } from 'react-native';
 import React, { useState, useLayoutEffect } from 'react';
+import { updateWarningStatus } from '../Firebase/firestoreHelper'; 
 
 const GoalDetails = ({ navigation, route }) => {
   const [isWarning, setIsWarning] = useState(false);
@@ -11,7 +12,11 @@ const GoalDetails = ({ navigation, route }) => {
       headerRight: () => (
         <Button
           title="Warning"
-          onPress={() => setIsWarning(!isWarning)}
+          onPress={async () => {
+            const newWarningStatus = !isWarning;
+            setIsWarning(newWarningStatus);
+            await updateWarningStatus(goalObj.id, 'goals', newWarningStatus);
+          }}
         />
       ),
     });
