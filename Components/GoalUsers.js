@@ -1,6 +1,6 @@
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
-import { writeToDB, readAllDocs } from "../Firebase/firestoreHelper";
+import { readAllDocs, writeToDB } from "../Firebase/firestoreHelper";
 
 const GoalUsers = ({ id }) => {
   const [users, setUsers] = useState([]);
@@ -9,7 +9,7 @@ const GoalUsers = ({ id }) => {
     async function fetchUserData() {
       try {
         const dataFromFirestore = await readAllDocs(`goals/${id}/users`);
-        console.log(dataFromFirestore.length);
+        console.log("data from firestore ",dataFromFirestore);
         if (dataFromFirestore.length) {
             setUsers(dataFromFirestore);
             return;
@@ -28,7 +28,8 @@ const GoalUsers = ({ id }) => {
         console.error("Error fetching user data:", err);
       }
     }
-    }, []);
+    fetchUserData();
+  }, [id]);
 
   return (
     <View>

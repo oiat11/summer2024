@@ -29,7 +29,7 @@ const GoalDetails = ({ navigation, route }) => {
         You are seeing the details of the goal with text: {goalObj.text} and id: {goalObj.id}
       </Text>
       <Button title="More Details" onPress={() => navigation.push('Details', { goalObj })} />
-      <GoalUsers />
+      <GoalUsers id = {goalObj.id}/>
     </View>
   );
 };

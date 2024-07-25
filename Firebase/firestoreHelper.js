@@ -34,13 +34,15 @@ export async function deleteFromDB(id, collectionName = 'goals') {
 export async function readAllDocs(collectionName) {
     try {
         const querySnapshot = await getDocs(collection(database, collectionName));
+        let newArray = [];
+
         querySnapshot.forEach((docSnapshot) => {
-            let newArray = [];
-            newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
+            newArray.push(docSnapshot.data());
             console.log('Document data:', newArray);
-            return newArray;
-        }
-        );
+           
+        } )
+
+        return newArray;
     } catch (err) {
         console.error('Error reading documents: ', err);
     }
