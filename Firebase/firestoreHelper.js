@@ -1,11 +1,10 @@
-import { addDoc, collection, doc, deleteDoc, updateDoc} from "firebase/firestore";
+import { addDoc, collection, doc, deleteDoc, updateDoc, getDocs} from "firebase/firestore";
 import { database } from "./FirebaseSetup";
 
-
-export async function writeToDB(data, col, docId, subCol) {
+export async function writeToDB(data, collectionPath) {
     try {
-      const subCollectionRef = collection(doc(database, col, docId), subCol);
-      const docRef = await addDoc(subCollectionRef, data);
+      const collectionRef = collection(database, collectionPath);
+      const docRef = await addDoc(collectionRef, data);
       console.log('Document written with ID: ', docRef.id);
     } catch (err) {
       console.error('write to db ', err);
@@ -29,5 +28,20 @@ export async function deleteFromDB(id, collectionName = 'goals') {
         console.log('Warning status:', warningStatus);
     } catch (err) {
         console.error('Error updating document', err);
+    }
+}
+
+export async function readAllDocs(collectionName) {
+    try {
+        const querySnapshot = await getDocs(collection(database, collectionName));
+        querySnapshot.forEach((docSnapshot) => {
+            let newArray = [];
+            newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
+            console.log('Document data:', newArray);
+            return newArray;
+        }
+        );
+    } catch (err) {
+        console.error('Error reading documents: ', err);
     }
 }
