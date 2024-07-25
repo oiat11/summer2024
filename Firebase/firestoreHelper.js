@@ -2,14 +2,15 @@ import { addDoc, collection, doc, deleteDoc, updateDoc} from "firebase/firestore
 import { database } from "./FirebaseSetup";
 
 
-export async function writeToDB(data, collectionName = 'goals') {
-    try{
-    const docId = await addDoc(collection(database, collectionName), data);
-    console.log('Document written with ID: ', docId.id);
-    } catch(err) {
-        console.error('write to db ', err);
+export async function writeToDB(data, col, docId, subCol) {
+    try {
+      const subCollectionRef = collection(doc(database, col, docId), subCol);
+      const docRef = await addDoc(subCollectionRef, data);
+      console.log('Document written with ID: ', docRef.id);
+    } catch (err) {
+      console.error('write to db ', err);
     }
-}
+  }
 
 export async function deleteFromDB(id, collectionName = 'goals') {
     try { 
