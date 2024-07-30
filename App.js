@@ -1,18 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from './Components/Home';
-import GoalDetails from './Components/GoalDetails';
-import Login from './Components/Login';
-import Signup from './Components/Signup';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './Firebase/FirebaseSetup';
+import React, { useState, useEffect } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Home from "./Components/Home";
+import GoalDetails from "./Components/GoalDetails";
+import Login from "./Components/Login";
+import Signup from "./Components/Signup";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./Firebase/FirebaseSetup";
+import Profile from "./Components/Profile";
+import PressableButton from "./Components/PressableButton";
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 const Stack = createNativeStackNavigator();
 
 const commonScreenOptions = {
-  headerStyle: { backgroundColor: 'darkmagenta' },
-  headerTintColor: '#fff',
+  headerStyle: { backgroundColor: "darkmagenta" },
+  headerTintColor: "#fff",
 };
 
 const AuthStack = (
@@ -24,7 +27,20 @@ const AuthStack = (
 
 const AppStack = (
   <>
-    <Stack.Screen name="Home" component={Home} options={{ title: "All Goals" }} />
+    <Stack.Screen
+      name="Home"
+      component={Home}
+      options={({ navigation }) => ({
+        title: "All Goals",
+        headerRight: () => (
+          <PressableButton
+            pressedFunction={() => navigation.navigate("Profile")}
+          >
+            <FontAwesome6 name="person" size={24} color="white" />
+          </PressableButton>
+        ),
+      })}
+    />
     <Stack.Screen
       name="Details"
       component={GoalDetails}
@@ -32,6 +48,7 @@ const AppStack = (
         title: route.params.goalObj.text,
       })}
     />
+    <Stack.Screen name="Profile" component={Profile} />
   </>
 );
 
