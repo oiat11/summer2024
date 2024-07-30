@@ -1,18 +1,39 @@
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import React, { useState } from 'react';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
-const Login = ( {navigation}) => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    console.log('Email:', email);
-    console.log('Password:', password);
+  const handleLogin = async () => {
+    if (!email.length) {
+      Alert.alert('Email is required');
+      return;
+    }
+    if (!password.length) {
+      Alert.alert('Password is required');
+      return;
+    }
+
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    } catch (e) {
+      console.error(e);
+      if (e.code === 'auth/user-not-found') {
+        Alert.alert('User not found. Please check your email and password.');
+      } else if (e.code === 'auth/wrong-password') {
+        Alert.alert('Incorrect password. Please try again.');
+      } else {
+        Alert.alert('Login failed. Please try again.');
+      }
+    }
   };
 
   return (
     <View style={styles.container}>
-        <Text style={styles.title}>Email Address</Text>
+      <Text style={styles.title}>Email Address</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -21,7 +42,7 @@ const Login = ( {navigation}) => {
         keyboardType="email-address"
         autoCapitalize="none"
       />
-        <Text style={styles.title}>Password</Text>
+      <Text style={styles.title}>Password</Text>
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -44,6 +65,7 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: 'left',
+    marginBottom: 8,
   },
   input: {
     height: 40,
