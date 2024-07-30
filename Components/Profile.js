@@ -14,7 +14,11 @@ const Profile = () => {
 
   return (
     <View>
-    <Text>Profile UID: {user.uid}</Text>
+      {user ? (
+        <Text>Profile: {user.email} {user.uid}</Text>
+      ) : (
+        <Text>No user is logged in</Text>
+      )}
     </View>
   );
 };
