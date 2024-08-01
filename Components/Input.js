@@ -1,13 +1,13 @@
-import { View, Text, TextInput, Button, StyleSheet, Modal, Image } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, Modal, Image } from 'react-native';
 import InputManager from './InputManager';
-// Import the local image
 import LocalImage from '../assets/2617812.png';
 
 const Input = ({ inputHandler, isModalVisible, onCancel }) => {
   const [text, setText] = useState('');
   const [showThankYou, setShowThankYou] = useState(false);
   const textInputRef = useRef(null);
+  const [imageUri, setImageUri] = useState('');
 
   useEffect(() => {
     if (textInputRef.current) {
@@ -25,20 +25,28 @@ const Input = ({ inputHandler, isModalVisible, onCancel }) => {
 
   const handleConfirm = () => {
     console.log(`You typed: ${text}`);
-    inputHandler(text);
-    setText('');  
+    inputHandler({ text, imageUri });
+    setText('');
+    setImageUri('');
   };
 
   const handleCancel = () => {
-    setText(''); 
+    setText('');
+    setImageUri('');
     onCancel();
+  };
+
+  const imageUriHandler = (uri) => {
+    console.log('uri', uri);
+    setImageUri(uri);
   };
 
   return (
     <Modal animationType="slide" visible={isModalVisible} transparent={true}>
       <View style={styles.modalBackground}>
         <View style={styles.container}>
-          <TextInput style={styles.input}
+          <TextInput
+            style={styles.input}
             placeholder="Type here"
             onChangeText={changedText => setText(changedText)}
             value={text}
@@ -46,15 +54,15 @@ const Input = ({ inputHandler, isModalVisible, onCancel }) => {
             onFocus={handleFocus}
             ref={textInputRef}
           />
-          <InputManager />
+          <InputManager imageUriHandler={imageUriHandler} />
           {showThankYou && <Text>Thank you</Text>}
           <View style={styles.imageContainer}>
-            <Image 
+            <Image
               style={styles.imageStyle}
               source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2617/2617812.png' }}
               alt="Network Image"
             />
-            <Image 
+            <Image
               style={styles.imageStyle}
               source={LocalImage}
               alt="Local Image"

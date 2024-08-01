@@ -3,15 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { auth } from '../Firebase/FirebaseSetup';
 
 const Profile = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const currentUser = auth.currentUser;
-    if (currentUser) {
-      setUser(currentUser);
-    }
-  }, []);
-
+ const user = auth.currentUser;
   return (
     <View>
       {user ? (

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Button, Alert, Text, Image, StyleSheet } from 'react-native';
+import { View, Button, Alert, Image, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-const InputManager = () => {
+const InputManager = ({ imageUriHandler }) => {
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
   const [imageUri, setImageUri] = useState(null);
 
@@ -25,8 +25,8 @@ const InputManager = () => {
       const result = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
       });
-
-        setImageUri(result.assets[0].uri);  
+        setImageUri(result.assets[0].uri);
+        imageUriHandler(result.assets[0].uri);
     } catch (e) {
       console.error('Error taking image:', e);
     }
