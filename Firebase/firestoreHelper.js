@@ -33,7 +33,7 @@ export async function deleteFromDB(id, collectionName = 'goals') {
 
 export async function readAllDocs(collectionName) {
     try {
-        const querySnapshot = await getDocs(query(collection(database, "goals"), 
+        const querySnapshot = await getDocs(query(collection(database, collectionName), 
         where("owner", "==", auth.currentUser.uid)));
         let newArray = [];
 

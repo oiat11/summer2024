@@ -1,6 +1,6 @@
 import { View, Text, TextInput, Button, StyleSheet, Modal, Image } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
-
+import InputManager from './InputManager';
 // Import the local image
 import LocalImage from '../assets/2617812.png';
 
@@ -46,6 +46,7 @@ const Input = ({ inputHandler, isModalVisible, onCancel }) => {
             onFocus={handleFocus}
             ref={textInputRef}
           />
+          <InputManager />
           {showThankYou && <Text>Thank you</Text>}
           <View style={styles.imageContainer}>
             <Image 
