@@ -1,9 +1,10 @@
-import React from 'react';
-import { View, Button, Alert, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, Button, Alert, Text, Image, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 const InputManager = () => {
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
+  const [imageUri, setImageUri] = useState(null);
 
   const verifyPermissions = async () => {
     if (status?.granted) {
@@ -21,20 +22,34 @@ const InputManager = () => {
     }
 
     try {
-      const image = await ImagePicker.launchCameraAsync({
+      const result = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
-
       });
+
+        setImageUri(result.assets[0].uri);  
     } catch (e) {
       console.error('Error taking image:', e);
     }
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Button title="Take Image" onPress={takeImageHandler} />
+      {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    width: 200,
+    height: 200,
+    marginTop: 20,
+  },
+});
 
 export default InputManager;
