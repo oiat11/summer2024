@@ -8,7 +8,8 @@ import PressableButton from './PressableButton';
 import { database } from '../Firebase/FirebaseSetup';
 import { deleteFromDB} from '../Firebase/firestoreHelper';
 import {writeToDB} from '../Firebase/firestoreHelper';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot, query,where } from 'firebase/firestore';
+import { auth } from '../Firebase/FirebaseSetup';
 
 export default function Home({ navigation }) {
   const appName = 'Summer 2024 class';
@@ -16,7 +17,8 @@ export default function Home({ navigation }) {
   const [goals, setGoals] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(database, 'goals'), (querySnapshot) => {
+    const unsubscribe = onSnapshot(query(collection(database, "goals"), 
+    where("owner", "==", auth.currentUser.uid)), (querySnapshot) => {
       let newArray = [];
       if (!querySnapshot.empty) {
         querySnapshot.forEach((docSnapshot) => {
@@ -24,6 +26,9 @@ export default function Home({ navigation }) {
         });
       }
       setGoals(newArray);
+       
+    },(err) => {
+      console.log(`Encountered error: ${err}`);
     });
 
     return () => unsubscribe();
@@ -31,7 +36,7 @@ export default function Home({ navigation }) {
 
 
   function handleInputData(data) {
-    const newGoal = { text: data };
+    const newGoal = { text: data, owner: auth.currentUser.uid };
     //setGoals(currentGoals => [...currentGoals, newGoal]);
     writeToDB(newGoal, "goals");
     setModalVisible(false);
