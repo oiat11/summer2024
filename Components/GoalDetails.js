@@ -1,4 +1,4 @@
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, Image } from 'react-native';
 import React, { useState, useLayoutEffect, useEffect } from 'react';
 import { updateWarningStatus } from '../Firebase/firestoreHelper'; 
 import GoalUsers from './GoalUsers';
@@ -28,18 +28,17 @@ const GoalDetails = ({ navigation, route }) => {
 
   useEffect(() => {
     async function fetchImageUri() {
-      if (goalObj.imageUri) {
+      if (route.params) {
         try {
-          const url = await getDownloadURL(ref(storage, goalObj.imageUri));
+          const url = await getDownloadURL(ref(storage, route.params.goalObj.imageUri));
           setImageUri(url);
         } catch (e) {
           console.error('Error getting download URL:', e);
         }
       }
     }
-
     fetchImageUri();
-  }, [goalObj.imageUri]);
+  }, []);
 
   return (
     <View style={styles.container}>

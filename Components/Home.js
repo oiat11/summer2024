@@ -57,6 +57,7 @@ export default function Home({ navigation }) {
       imageUri = await retrieveAndUploadImage(data.imageUri);
     }
     const newGoal = { text: data.text, owner: auth.currentUser.uid, imageUri: imageUri };
+    console.log('New goal:', newGoal);
     writeToDB(newGoal, "goals");
     setModalVisible(false);
   }
