@@ -36,7 +36,6 @@ export default function Home({ navigation }) {
   }, []);
 
   async function retrieveAndUploadImage(uri) {
-    console.log('Retrieving image:', uri);
     try {
     const response = await fetch(uri);
     if (!response.ok) {
@@ -46,18 +45,18 @@ export default function Home({ navigation }) {
     const imageName = uri.substring(uri.lastIndexOf('/') + 1);
     const imageRef = ref(storage, `images/${imageName}`)
     const uploadResult = await uploadBytesResumable(imageRef, blob);
-    console.log('Upload result:', uploadResult);
+    return uploadResult.metadata.fullPath;
     } catch (e) {
       console.error('Error retrieving image:', e);
     }
   }
 
-  function handleInputData(data) {
-    console.log('Data from input:', data);
+  async function handleInputData(data) {
+    let imageUri = '';
     if (data.imageUri) {
-      retrieveAndUploadImage(data.imageUri);
+      imageUri = await retrieveAndUploadImage(data.imageUri);
     }
-    const newGoal = { text: data.text, owner: auth.currentUser.uid, imageUri: data.imageUri };
+    const newGoal = { text: data.text, owner: auth.currentUser.uid, imageUri: imageUri };
     writeToDB(newGoal, "goals");
     setModalVisible(false);
   }
