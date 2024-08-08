@@ -2,8 +2,10 @@ import { View, Text, Button, Alert, Image, Dimensions } from "react-native";
 import React, { useState } from "react";
 import * as Location from "expo-location";
 import { mapsApiKey } from "@env";
+import { useNavigation } from '@react-navigation/native';
 
 const LocationManager = () => {
+  const navigation = useNavigation();
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
   const [permissionResponse, requestPermission] =
     Location.useForegroundPermissions();
@@ -35,9 +37,16 @@ const LocationManager = () => {
     }
   };
 
+  const chooseLocationHandler = () => {
+    navigation.navigate('Map');
+  }
+
+
+
   return (
     <View>
       <Button title="Get Location" onPress={locateUserHandler} />
+      <Button title="Let me choose a location" onPress={chooseLocationHandler} />
       <Text>
         Latitude: {location.latitude}, Longitude: {location.longitude}
       </Text>
