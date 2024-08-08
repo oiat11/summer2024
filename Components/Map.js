@@ -2,7 +2,7 @@ import { View, Dimensions, Button, StyleSheet } from 'react-native';
 import React, { useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 
-const Map = ({navigation}) => {
+const Map = ({ navigation }) => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   
   const initialRegion = {
@@ -13,8 +13,7 @@ const Map = ({navigation}) => {
   };
 
   const handleSave = () => {
-    console.log('Save location:', selectedLocation);
-    navigation.navigate("Profile", { selectedLocation: selectedLocation });
+    navigation.navigate('Profile', { selectedLocation: selectedLocation });
   }
 
   return (
@@ -33,11 +32,9 @@ const Map = ({navigation}) => {
           <Marker coordinate={selectedLocation} />
         )}
       </MapView>
-      {selectedLocation && (
-        <View style={styles.buttonContainer}>
-          <Button title="Confirm Selected Location" onPress={handleSave} />
-        </View>
-      )}
+      <View style={styles.buttonContainer}>
+        <Button title="Confirm Selected Location" onPress={handleSave} disabled={!selectedLocation} />
+      </View>
     </View>
   );
 };

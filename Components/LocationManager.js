@@ -1,11 +1,20 @@
 import { View, Text, Button, Alert, Image, Dimensions } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRoute } from '@react-navigation/native';
 import * as Location from "expo-location";
 import { mapsApiKey } from "@env";
 import { useNavigation } from '@react-navigation/native';
 
 const LocationManager = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+
+  useEffect(() => {
+    if (route.params) {
+      setLocation(route.params.selectedLocation);
+    }
+  })
+
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
   const [permissionResponse, requestPermission] =
     Location.useForegroundPermissions();
