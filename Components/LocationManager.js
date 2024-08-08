@@ -4,6 +4,8 @@ import { useRoute } from '@react-navigation/native';
 import * as Location from "expo-location";
 import { mapsApiKey } from "@env";
 import { useNavigation } from '@react-navigation/native';
+import { writeWithId } from '../Firebase/firestoreHelper'; 
+import { auth } from '../Firebase/FirebaseSetup';
 
 const LocationManager = () => {
   const navigation = useNavigation();
@@ -15,7 +17,7 @@ const LocationManager = () => {
     }
   })
 
-  const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
+  const [location, setLocation] = useState('');
   const [permissionResponse, requestPermission] =
     Location.useForegroundPermissions();
 
@@ -50,8 +52,11 @@ const LocationManager = () => {
     navigation.navigate('Map');
   }
 
-
-
+  const handleSave = () => {
+    const userId = auth.currentUser.uid;
+    writeWithId(location, 'users', userId, 'locations');
+    Alert.alert("Location saved successfully!");
+  }
   return (
     <View>
       <Button title="Get Location" onPress={locateUserHandler} />
@@ -59,7 +64,7 @@ const LocationManager = () => {
       <Text>
         Latitude: {location.latitude}, Longitude: {location.longitude}
       </Text>
-      {location.latitude !== 0 && location.longitude !== 0 && (
+      {location && (
         <Image
           source={{
             uri: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=${mapsApiKey}`,
@@ -67,6 +72,7 @@ const LocationManager = () => {
           style={{ width: Dimensions.get('window').width, height: 200 }}
         />
       )}
+      <Button title="Save Location" onPress={handleSave} disabled={!location} />
     </View>
   );
 };

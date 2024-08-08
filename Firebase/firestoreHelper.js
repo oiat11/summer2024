@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, deleteDoc, updateDoc, getDocs, query, where} from "firebase/firestore";
+import { addDoc, collection, doc, deleteDoc, updateDoc, getDocs, query, where, setDoc} from "firebase/firestore";
 import { database, auth } from "./FirebaseSetup";
 
 
@@ -48,4 +48,14 @@ export async function readAllDocs(collectionName) {
     } catch (err) {
         console.error('Error reading documents: ', err);
     }
+}
+
+export async function writeWithId(data, collectionName, id) {
+  try {
+    const docRef = doc(database, collectionName, id);
+    await setDoc(docRef, data, { merge: true });
+    console.log('Document successfully written!');
+  } catch (err) {
+    console.error('Error writing document: ', err);
+  }
 }
