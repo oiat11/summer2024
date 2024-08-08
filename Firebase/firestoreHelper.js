@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, deleteDoc, updateDoc, getDocs, query, where, setDoc} from "firebase/firestore";
+import { addDoc, collection, doc, deleteDoc, updateDoc, getDocs, query, where, setDoc, getDoc} from "firebase/firestore";
 import { database, auth } from "./FirebaseSetup";
 
 
@@ -57,5 +57,19 @@ export async function writeWithId(data, collectionName, id) {
     console.log('Document successfully written!');
   } catch (err) {
     console.error('Error writing document: ', err);
+  }
+}
+
+export async function getADoc(collectionName, id) {
+  try {
+    const docRef = doc(database, collectionName, id);
+    const docSnapshot = await getDoc(docRef);
+    if (docSnapshot.exists()) {
+      return docSnapshot.data();
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.error('Error getting document: ', err);
   }
 }
