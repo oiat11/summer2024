@@ -34,22 +34,21 @@ const LocationManager = () => {
       console.error(err);
     }
   };
-if (location)
-{console.log(`https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=${mapsApiKey}`)
-}
+
   return (
     <View>
       <Button title="Get Location" onPress={locateUserHandler} />
       <Text>
         Latitude: {location.latitude}, Longitude: {location.longitude}
       </Text>
-
-      {location && <Image
-        source={{
-          uri: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=${mapsApiKey}`,
-        }}
-        style={{ width: 200, height: 200 }}
-      />}
+      {location.latitude !== 0 && location.longitude !== 0 && (
+        <Image
+          source={{
+            uri: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=${mapsApiKey}`,
+          }}
+          style={{ width: Dimensions.get('window').width, height: 200 }}
+        />
+      )}
     </View>
   );
 };
