@@ -5,9 +5,10 @@ import Header from './Header';
 import Input from './Input';
 import GoalItem from './GoalItem';
 import PressableButton from './PressableButton';
-import { database, auth } from '../Firebase/FirebaseSetup';
+import { database, auth, storage } from '../Firebase/FirebaseSetup';
 import { deleteFromDB, writeToDB } from '../Firebase/firestoreHelper';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { ref, uploadBytesResumable } from 'firebase/storage';
 
 export default function Home({ navigation }) {
   const appName = 'Summer 2024 class';
@@ -34,8 +35,29 @@ export default function Home({ navigation }) {
     return () => unsubscribe();
   }, []);
 
-  function handleInputData(data) {
-    const newGoal = { text: data.text, owner: auth.currentUser.uid, imageUri: data.imageUri };
+  async function retrieveAndUploadImage(uri) {
+    try {
+    const response = await fetch(uri);
+    if (!response.ok) {
+     throw new Error("The request was not successful");
+    }
+    const blob = await response.blob();
+    const imageName = uri.substring(uri.lastIndexOf('/') + 1);
+    const imageRef = ref(storage, `images/${imageName}`)
+    const uploadResult = await uploadBytesResumable(imageRef, blob);
+    return uploadResult.metadata.fullPath;
+    } catch (e) {
+      console.error('Error retrieving image:', e);
+    }
+  }
+
+  async function handleInputData(data) {
+    let imageUri = '';
+    if (data.imageUri) {
+      imageUri = await retrieveAndUploadImage(data.imageUri);
+    }
+    const newGoal = { text: data.text, owner: auth.currentUser.uid, imageUri: imageUri };
+    console.log('New goal:', newGoal);
     writeToDB(newGoal, "goals");
     setModalVisible(false);
   }

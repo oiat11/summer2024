@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Button, Alert, Image, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
+
 const InputManager = ({ imageUriHandler }) => {
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
   const [imageUri, setImageUri] = useState(null);
