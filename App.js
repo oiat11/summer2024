@@ -12,6 +12,7 @@ import PressableButton from "./Components/PressableButton";
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { signOut } from 'firebase/auth';
+import Map from "./Components/Map";
 
 
 const Stack = createNativeStackNavigator();
@@ -69,6 +70,7 @@ const AppStack = (
         </PressableButton>
       ),
     })}/>
+    <Stack.Screen name="Map" component={Map} />
   </>
 );
 
