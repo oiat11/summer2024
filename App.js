@@ -13,6 +13,7 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { signOut } from 'firebase/auth';
 import Map from "./Components/Map";
+import * as Notifications from 'expo-notifications';
 
 
 const Stack = createNativeStackNavigator();
@@ -73,6 +74,15 @@ const AppStack = (
     <Stack.Screen name="Map" component={Map} />
   </>
 );
+
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true,
+    };
+  },
+});
 
 export default function App() {
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
