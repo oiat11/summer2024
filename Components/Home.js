@@ -9,11 +9,40 @@ import { database, auth, storage } from '../Firebase/FirebaseSetup';
 import { deleteFromDB, writeToDB } from '../Firebase/firestoreHelper';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { ref, uploadBytesResumable } from 'firebase/storage';
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
+import { Platform } from "react-native";
+import { verifyPermissions } from './NotificationManager';
 
 export default function Home({ navigation }) {
   const appName = 'Summer 2024 class';
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
+
+  useEffect(() => {
+    async function getToken() {
+      try {
+        const permissionResponse = await verifyPermissions();
+        if (!permissionResponse.granted) {
+          return;
+        }
+        
+        if (Platform.OS === "android") {
+          await Notifications.setNotificationChannelAsync("default", {
+            name: "default",
+            importance: Notifications.AndroidImportance.MAX,
+          });
+        }
+        const tokenData = await Notifications.getExpoPushTokenAsync({
+          projectId: Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId,
+        });
+      } catch (error) {
+        console.error("Error getting push token:", error);
+      }
+    }
+  
+    getToken();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
