@@ -23,6 +23,7 @@ const NotificationManager = () => {
                 content: {
                     title: "This is your reminder",
                     body: "Reminder of the goal",
+                    data: { url: 'https://www.google.com' },
                 },
                 trigger: {
                     seconds: 5, 
