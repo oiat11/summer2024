@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, StyleSheet, SafeAreaView, FlatList } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, FlatList, Button } from 'react-native';
 import Header from './Header';
 import Input from './Input';
 import GoalItem from './GoalItem';
@@ -23,10 +23,11 @@ export default function Home({ navigation }) {
     async function getToken() {
       try {
         const permissionResponse = await verifyPermissions();
-        if (!permissionResponse.granted) {
+        console.log("Permission response:", permissionResponse);
+        if (!permissionResponse) {
           return;
         }
-        
+        console.log(permissionResponse);
         if (Platform.OS === "android") {
           await Notifications.setNotificationChannelAsync("default", {
             name: "default",
@@ -34,8 +35,9 @@ export default function Home({ navigation }) {
           });
         }
         const tokenData = await Notifications.getExpoPushTokenAsync({
-          projectId: Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId,
+          projectId: Constants.expoConfig.extra.eas.projectId,
         });
+        console.log("Push token:", tokenData);
       } catch (error) {
         console.error("Error getting push token:", error);
       }
@@ -98,7 +100,21 @@ export default function Home({ navigation }) {
   function handleDelete(deleteId) {
     deleteFromDB(deleteId, "goals");
   }
+  async function pushNotificationHandler() {
 
+      const response = await fetch("https://exp.host/--/api/v2/push/send", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          to: "ExponentPushToken[D3t1eFNz1Z6GukuCosjFB9]",
+          title: "Push Notification",
+          body: "This is a push notification",
+        }),
+      });
+  }
+  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topContainer}>
@@ -107,6 +123,7 @@ export default function Home({ navigation }) {
         <PressableButton style={styles.buttonStyle} pressedFunction={() => setModalVisible(true)}>
           <Text style={styles.textStyle}>Add a goal</Text>
         </PressableButton>
+        <Button title="test push notification" onPress={pushNotificationHandler} />
       </View>
       <View style={styles.bottomContainer}>
         {goals.length === 0 && <Text style={styles.noGoalsText}>Please add a goal</Text>}
