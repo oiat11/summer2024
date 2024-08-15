@@ -13,6 +13,8 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { signOut } from 'firebase/auth';
 import Map from "./Components/Map";
+import * as Notifications from 'expo-notifications';
+import { Linking } from "react-native";
 
 
 const Stack = createNativeStackNavigator();
@@ -74,6 +76,15 @@ const AppStack = (
   </>
 );
 
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true,
+    };
+  },
+});
+
 export default function App() {
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
 
@@ -88,6 +99,30 @@ export default function App() {
     })
   }, []);
 
+  useEffect(() => {
+    const subscription = Notifications.addNotificationReceivedListener(notification => {
+      console.log(notification);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+      const url = response.notification.request.content.data.url;
+  
+      if (url) {
+        Linking.openURL(url);
+      }
+    });
+  
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+  
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={commonScreenOptions}>
